@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nosso Amor - 1 Ano</title>
+
+    <!-- Fonte Ancizar Serif -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Ancizar+Serif:ital,wght@0,300..900;1,300..900&display=swap"
+        rel="stylesheet" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            color: #fff;
+            font-family: 'Ancizar Serif', serif;
+            overflow-x: hidden;
+            line-height: 1.4;
+            font-size: 14px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .centered {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem 1rem;
+            flex-direction: column;
+            text-align: center;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        button {
+            background: #fff;
+            color: #000;
+            border: none;
+            border-radius: 6px;
+            padding: 0.4rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background: #ddd;
+        }
+
+        .button-container {
+            display: grid;
+            gap: 0.6rem;
+            margin-top: 1rem;
+        }
+
+        .button-container.three {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .nav-buttons {
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        #btnMusica {
+            position: fixed;
+            bottom: 12px;
+            right: 12px;
+            background: linear-gradient(180deg, #fff, #eee);
+            border-radius: 12px;
+            width: 36px;
+            height: 72px;
+            cursor: pointer;
+            color: #000;
+            font-size: 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+            border: 1.5px solid #ccc;
+            z-index: 1000;
+            padding: 6px 0;
+        }
+
+        .timeline {
+            max-width: 600px;
+            margin: 2rem auto;
+            position: relative;
+            padding-left: 40px;
+            border-left: 3px solid #fff;
+            text-align: left;
+        }
+
+        .event {
+            position: relative;
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.6s ease-out;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .event.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .event::before {
+            content: "";
+            position: absolute;
+            left: -13px;
+            top: 10px;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            border: 3px solid #000;
+        }
+
+        .event img {
+            width: 90px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid #fff;
+        }
+
+        .content h2 {
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .content p {
+            font-size: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <audio id="musica" loop>
+        <source src="src/MUSIC.mp3" type="audio/mpeg" />
+        Seu navegador não suporta áudio.
+    </audio>
+
+    <button id="btnMusica" title="Pausar/Retomar música">🔈</button>
+
+    <div id="app" class="centered"></div>
+
+    <script>
+        const app = document.getElementById('app');
+        const musica = document.getElementById('musica');
+        const btnMusica = document.getElementById('btnMusica');
+        let musicaTocando = false;
+
+        btnMusica.addEventListener('click', () => {
+            if (musicaTocando) {
+                musica.pause();
+                musicaTocando = false;
+                btnMusica.textContent = "🔈";
+            } else {
+                musica.play();
+                musicaTocando = true;
+                btnMusica.textContent = "🔊";
+            }
+        });
+
+        function goToPage(page) {
+            if (page === 'timeline') {
+                app.innerHTML = `
+          <h1>Timeline - 1 ano</h1>
+          <div class="timeline">
+            <div class="event"><img src="src/img1.jpeg" /><div class="content"><h2>07/04/2024</h2><p>Nossa primeira conversa.</p></div></div>
+            <div class="event"><img src="src/img2.jpeg" /><div class="content"><h2>10/04/2024</h2><p>Primeiro flerte.</p></div></div>
+            <div class="event"><img src="src/img5.jpeg" /><div class="content"><h2>25/04/2024</h2><p>Começamos a ficar sério.</p></div></div>
+            <div class="event"><img src="src/img3.jpeg" /><div class="content"><h2>11/07/2024</h2><p>Pedi você em namoro.</p></div></div>
+          </div>
+          <div class="nav-buttons">
+            <button onclick="goHome()">Voltar</button>
+            <button onclick="goToPage('texto')">Continuar</button>
+          </div>
+        `;
+                const events = document.querySelectorAll('.event');
+                events.forEach((el, i) => {
+                    setTimeout(() => el.classList.add('visible'), 200 * i);
+                });
+            } else if (page === 'texto') {
+                app.innerHTML = `
+          <h1>Meu amor,</h1>
+          <p style="text-align: justify;">1 ano de nós. 1 ano desde que eu tive a certeza de que era com você que eu queria ficar. que você era a pessoa certa, que me fazia bem de verdade, que me dava segurança pra falar sobre qualquer coisa. você chegou quando eu não queria ninguém, quando eu achava que tava bem sozinho, e mesmo assim conseguiu me conquistar de um jeito que ninguém nunca tinha feito antes.
+você fez eu querer mudar, não porque você me pediu isso, mas porque eu queria ser melhor pra você, queria estar do seu lado e te fazer bem também. e fui mudando, fui percebendo o quanto eu gostava de te ver feliz e de estar com você. você me mostrou o que é se sentir realmente apaixonado, o que é ter alguém que soma, que faz a diferença de verdade. é muito bom poder confiar em você pra tudo.
+e aí você virou minha pessoa. alguém que eu admiro, que eu valorizo, que eu amo de um jeito que nunca amei antes. e é por isso que eu nunca quero te perder. mesmo com os altos e baixos, mesmo com as nossas diferenças, eu sempre volto pro mesmo pensamento: eu não quero ninguém além de você.
+desde o começo eu soube que você era única, bebê. e com o tempo, essa certeza só cresceu. eu te amo infinitamente. sei que nossa relação não vai acabar, porque mesmo com as brigas, eu não consigo imaginar minha vida sem você. você me traz uma paz e uma segurança absurda, e isso não tem preço. obrigado por esse primeiro ano. que venham muitos outros. com você. sempre.</p>
+          <div class="nav-buttons">
+            <button onclick="goToPage('timeline')">Voltar</button>
+            <button onclick="goToPage('videos')">Ver nossos vídeos</button>
+          </div>
+        `;
+            } else if (page === 'videos') {
+                app.innerHTML = `
+          <h1>Edits</h1>
+          <div>
+          <a href="https://drive.google.com/drive/folders/1euqiSh_p5j0fyvKA7_3ifQODRB8I0d63" target="_blank">
+        <button>Abrir</button>
+      </a>
+          </div>
+          <div class="nav-buttons">
+            <button onclick="goToPage('texto')">Voltar</button>
+            <button onclick="goHome()">Início</button>
+          </div>
+        `;
+            } else if (page === 'errada') {
+                app.innerHTML = `
+          <h1>Ops! Não é essa data...</h1>
+          <p>Tente novamente, essa data não é o que estamos comemorando hoje.</p>
+          <div class="nav-buttons"><button onclick="goHome()">Voltar</button></div>
+        `;
+            }
+        }
+
+        function goHome() {
+            app.innerHTML = `
+        <h1>O que estamos comemorando hoje?</h1>
+        <div class="button-container three">
+          <button onclick="goToPage('errada')">1 ano da primeira conversa</button>
+          <button onclick="goToPage('errada')">1 ano de namoro</button>
+          <button onclick="goToPage('timeline')">1 ano do primeiro gf</button>
+        </div>
+      `;
+        }
+
+        // Inicial
+        goHome();
+    </script>
+</body>
+
+</html>
